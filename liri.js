@@ -55,11 +55,20 @@ function concertThis(artist) {
 };
 
 // function for spotify-this-song command:
-function spotifyThisSong(song) {
+function spotifyThisSong(userInput) {
+    if (userInput === "") {
+        console.log("------------ WHOOPS ------------")
+        console.log("You searched for nothing. Showing you 'The Sign' by Ace of Base, instead")
+        userInput = "The Sign Ace of Base";
+    }
     spotify.search({
         type: 'track',
-        query: song
-    }).then(function(response) {
+        query: userInput
+    }).then(function(response, err) {
+        if (err) {
+            console.log("Error occurred: " + err);
+            return;
+        }
         if (response.tracks.total === 0) {
             noSong();
         }
@@ -73,6 +82,7 @@ function spotifyThisSong(song) {
         }
     }).catch(function(error) {
         console.log(error);
+        noSong();
         console.log("No Results Found. Showing you 'The Sign' by Ace of Base, instead");
     });
 }
@@ -85,6 +95,8 @@ function noSong() {
          }).then(function(response) {
             for (var i=0;i < response.tracks.items.length; i++) {
                 if (response.tracks.items[i].artists[0].name === "Ace of Base") {
+                    console.log("------------ WHOOPS ------------")
+                    console.log("No Results Found. Showing you 'The Sign' by Ace of Base, instead");
                     console.log("------------ Spotify Song ------------");
                     console.log("Artist: " + response.tracks.items[i].artists[0].name);
                     console.log("Track: " + response.tracks.items[i].name);
@@ -96,6 +108,6 @@ function noSong() {
             }
         }).catch(function (error) {  
             console.log(error);
-            console.log("No Results found. ");
+            console.log("No Results found.");
       });
 };

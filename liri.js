@@ -139,3 +139,14 @@ function movieThis(userInput) {
         console.log("No Results found. ");
   });
 }
+
+// function for do-what-it-says command
+function doSomething() {
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        var dataArr = data.split(",");
+        spotifyThisSong(dataArr[1])
+        if (error) {
+          return console.log(error);
+        }
+    });
+}

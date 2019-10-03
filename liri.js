@@ -76,3 +76,26 @@ function spotifyThisSong(song) {
         console.log("No Results Found. Showing you 'The Sign' by Ace of Base, instead");
     });
 }
+
+//function for when no song comes up in spotify-this-song command:
+function noSong() {
+    spotify.search({
+         type: 'track',
+          query: 'The Sign'
+         }).then(function(response) {
+            for (var i=0;i < response.tracks.items.length; i++) {
+                if (response.tracks.items[i].artists[0].name === "Ace of Base") {
+                    console.log("------------ Spotify Song ------------");
+                    console.log("Artist: " + response.tracks.items[i].artists[0].name);
+                    console.log("Track: " + response.tracks.items[i].name);
+                    console.log("Preview URL: " + response.tracks.items[i].preview_url);
+                    console.log("Album: " + response.tracks.items[i].album.name);
+                    i = response.tracks.items.length;
+                    console.log("--------------------------------------");
+                }
+            }
+        }).catch(function (error) {  
+            console.log(error);
+            console.log("No Results found. ");
+      });
+};

@@ -1,8 +1,8 @@
 //Libraries
 require('dotenv').config();
 var keys = require('./keys.js');
-// var spotify = new spotify(keys.spotify);
 var Spotify = require('node-spotify-api');
+var spotify = new Spotify(keys.spotify);
 var fs = require('fs');
 var moment = require('moment');
 var axios = require('axios');
@@ -52,4 +52,27 @@ function concertThis(artist) {
     ).catch(function (error) {
         console.log (error);
   });
+};
+
+// function for spotify-this-song command:
+function spotifyThisSong(song) {
+    spotify.search({
+        type: 'track',
+        query: song
+    }).then(function(response) {
+        if (response.tracks.total === 0) {
+            noSong();
+        }
+        else {
+            console.log("------------ Spotify Song ------------");
+            console.log("Artist: " + response.tracks.items[0].artists[0].name);
+            console.log("Track: " + response.tracks.items[0].name);
+            console.log("Preview URL: " + response.tracks.items[0].preview_url);
+            console.log("Album: " + response.tracks.items[0].album.name);
+            console.log("--------------------------------------");
+        }
+    }).catch(function(error) {
+        console.log(error);
+        console.log("No Results Found. Showing you 'The Sign' by Ace of Base, instead");
+    });
 }
